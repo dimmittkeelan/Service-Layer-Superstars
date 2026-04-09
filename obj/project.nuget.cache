@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "VS1anlreJRA=",
+  "success": true,
+  "projectFilePath": "/Users/keelandimmitt/Documents/GitHub/Service-Layer-Superstars/LibraryApi.csproj",
+  "expectedPackageFiles": [
+    "/Users/keelandimmitt/.nuget/packages/microsoft.aspnetcore.openapi/9.0.12/microsoft.aspnetcore.openapi.9.0.12.nupkg.sha512",
+    "/Users/keelandimmitt/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}
