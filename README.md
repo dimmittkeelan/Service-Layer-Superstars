@@ -18,7 +18,7 @@ Backend API Project built with ASP.NET Core
 | Milestone 1 — Team name and member list submitted via Canvas | April 11 |
 | Final Submission | April 26 |
 
-Final submission is emailed to `mfirdouse@fullerton.edu` with your class and company name in the subject line.
+Final submission is emailed to `mfirdouse@fullerton.edu` with class and group name in the subject line.
 
 ## Project Overview
 
