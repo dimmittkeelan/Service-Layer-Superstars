@@ -1,39 +1,32 @@
-# 📚 Library Book Borrowing System
-### Backend API Project | ASP.NET Core
+# Library Book Borrowing System
 
-> **Team:** Service Layer Superstars
-> **Course:** Cal State Fullerton — Backend Engineering
+Backend API Project built with ASP.NET Core
 
----
+**Team:** Service Layer Superstars
+**Course:** Cal State Fullerton — CPSC 449: Backend Engineering
 
-## 👥 Team Members
+## Team Members
 
 - Keelan Dimmitt
 - Owin Rojas
 - Varnika Pullareddy
 
----
-
-## 📅 Important Dates
+## Important Dates
 
 | Milestone | Due Date |
 |-----------|----------|
-| **Milestone 1** — Team name & member list submitted via Canvas | **April 11** |
-| **Final Submission** | **April 26** |
+| Milestone 1 — Team name and member list submitted via Canvas | April 11 |
+| Final Submission | April 26 |
 
-Final submission is emailed to `mfirdouse@fullerton.edu` with your class and company name in the subject line.
+Final submission is emailed to `mfirdouse@fullerton.edu` with the class and group name in the subject line.
 
----
-
-## 🎯 Project Overview
+## Project Overview
 
 A backend REST API for a Library Book Borrowing System built with ASP.NET Core. The system supports managing books, library members, and borrowing records with a focus on clean architecture, correctness, and real-world backend engineering practices.
 
 No UI. No authentication. Backend only.
 
----
-
-## 🗂️ Resources
+## Resources
 
 The system is built around three core resources:
 
@@ -41,11 +34,9 @@ The system is built around three core resources:
 - **Member** — tracks library members and their membership info
 - **BorrowRecord** — tracks who borrowed what, when, and the return status
 
----
+## Architecture
 
-## 🏗️ Architecture
-
-The project follows a **multi-layer architecture**:
+The project follows a multi-layer architecture:
 
 - **Controller Layer** — handles routing and HTTP concerns
 - **Service Layer** — enforces business logic and rules
@@ -53,17 +44,15 @@ The project follows a **multi-layer architecture**:
 
 DTOs are used for all API input and output. Dependencies are injected via constructor injection registered in `Program.cs`.
 
----
-
-## 📦 Deliverables
+## Deliverables
 
 ### 1. Source Code
 A GitHub repository containing the complete ASP.NET Core Web API project with visible commits from all team members.
 
-### 2. Design Document *(2–4 pages)*
+### 2. Design Document (2–4 pages)
 Covers:
 - System overview
-- API design (endpoint list)
+- API design and endpoint list
 - Architecture explanation
 - DTO design
 - Validation strategy
@@ -85,9 +74,7 @@ Must demonstrate:
 - Concurrency scenario
 - Caching behavior
 
----
-
-## 📋 Grading Rubric
+## Grading Rubric
 
 | Category | Points |
 |----------|--------|
@@ -104,7 +91,3 @@ Must demonstrate:
 | Documentation | 5 |
 | Demo / Presentation | 5 |
 | **Total** | **100** |
-
----
-
-*Service Layer Superstars — Cal State Fullerton*
