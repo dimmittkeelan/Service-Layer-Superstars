@@ -1,4 +1,4 @@
-# Library Book Borrowing System
+# Assignment: Library Book Borrowing System (Backend API)
 
 Backend API Project built with ASP.NET Core
 
