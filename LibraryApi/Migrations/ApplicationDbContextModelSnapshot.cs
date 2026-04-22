@@ -19,9 +19,9 @@ namespace LibraryApi.Migrations
 
             modelBuilder.Entity("LibraryApi.Models.Book", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Author")
                         .IsRequired()
@@ -48,18 +48,18 @@ namespace LibraryApi.Migrations
 
             modelBuilder.Entity("LibraryApi.Models.BorrowRecord", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("BookId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("BorrowDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("MemberId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("MemberId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("TEXT");
@@ -75,9 +75,9 @@ namespace LibraryApi.Migrations
 
             modelBuilder.Entity("LibraryApi.Models.Member", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()

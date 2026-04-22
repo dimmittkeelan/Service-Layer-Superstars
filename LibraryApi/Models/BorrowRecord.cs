@@ -12,9 +12,9 @@ BorrowRecord
  */
     public class BorrowRecord
     {
-        public int Id { get; set; }
-        public int BookId { get; set; }
-        public int MemberId { get; set; }
+        public Guid Id { get; set; }
+        public Guid BookId { get; set; }
+        public Guid MemberId { get; set; }
         public DateTime BorrowDate { get; set; }
         public DateTime? ReturnDate { get; set; }
         public string Status { get; set; } = "Borrowed";
