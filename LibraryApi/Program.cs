@@ -1,5 +1,6 @@
 using LibraryApi.Data;
 using Microsoft.EntityFrameworkCore;
+using LibraryApi.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+builder.Services.AddScoped<IBorrowRecordRepository, BorrowRecordRepository>();
 
 var app = builder.Build();
 
