@@ -23,10 +23,11 @@ namespace LibraryApi.Repositories
             return _context.Books.Find(id);
         }
 
-        public void Add(Book book)
+        public Book Add(Book book)
         {
             _context.Books.Add(book);
             _context.SaveChanges();
+            return book;
         }
 
         public void Update(Book book)

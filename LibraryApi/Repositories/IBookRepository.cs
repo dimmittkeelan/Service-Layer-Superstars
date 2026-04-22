@@ -1,3 +1,4 @@
+using LibraryApi.Dtos;
 using LibraryApi.Models;
 
 namespace LibraryApi.Repositories
@@ -6,7 +7,8 @@ namespace LibraryApi.Repositories
     {
         IEnumerable<Book> GetAll();
         Book? GetById(Guid id);
-        void Add(Book book);
+        
+        Book Add(Book book);
         void Update(Book book);
         void Delete(Guid id);
     }
