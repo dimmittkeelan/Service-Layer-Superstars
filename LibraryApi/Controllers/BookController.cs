@@ -49,6 +49,28 @@ namespace LibraryApi.Controllers
             var created = _bookService.CreateBook(input);
             return CreatedAtAction(nameof(GetBookById), new { id = created.Id }, created);
         }
+        
+        [HttpPut("{id:guid}")]
+        public ActionResult UpdateBook(Guid id, [FromBody] UpdateBookRequest input)
+        {
+
+            var updated = _bookService.UpdateBook(id, input);
+            if (updated == null)
+            {
+                return NotFound();
+            }
+            return Ok(updated);
+        }
+        [HttpDelete("{id:guid}")]
+        public ActionResult DeleteBook(Guid id)
+        {
+            var deleted = _bookService.DeleteBook(id);
+            if (deleted == null)
+            {
+                return NotFound();
+            }
+            return Ok(deleted);
+        }
 
     }
 }

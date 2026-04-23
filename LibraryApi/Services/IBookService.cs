@@ -8,7 +8,7 @@ namespace LibraryApi.Services
         IEnumerable<Book> GetBooks();
         BookResponse? GetBookById(Guid id);
         BookResponse CreateBook(CreateBookRequest request);
-        void UpdateBook(Book book);
-        void DeleteBook(Guid id);
+        BookResponse? UpdateBook(Guid id, UpdateBookRequest request);
+        BookResponse? DeleteBook(Guid id);
     }
 }
