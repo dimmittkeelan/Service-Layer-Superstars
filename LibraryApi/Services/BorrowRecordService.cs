@@ -12,8 +12,10 @@ namespace LibraryApi.Services
         private readonly IMemberRepository _memberRepository;
         private readonly IMemoryCache _cache;
         private const string BorrowRecordsCacheKey = "borrow-records:all";
+        private const string BooksCacheKey = "books:all";
 
         private static string MemberBorrowHistoryCacheKey(Guid memberId) => $"borrow-records:member:{memberId}";
+        private static string BookByIdCacheKey(Guid id) => $"books:{id}";
 
         public BorrowRecordService(
             IBorrowRecordRepository borrowRecordRepository,
@@ -53,7 +55,7 @@ namespace LibraryApi.Services
             var activeBorrow = await _borrowRecordRepository.GetActiveBorrow(request.BookId, request.MemberId);
             if (activeBorrow != null)
             {
-                throw new InvalidOperationException("Member already has an active borrow of this book.");
+                throw new InvalidOperationException("Member already checked-out a copy of this book.");
             }
 
             // Create borrow record
@@ -73,7 +75,7 @@ namespace LibraryApi.Services
             book.AvailableCopies--;
             await _bookRepository.Update(book);
 
-            InvalidateCache();
+            InvalidateCache(request.BookId);
 
             return MapToResponse(createdRecord);
         }
@@ -109,7 +111,7 @@ namespace LibraryApi.Services
             book.AvailableCopies++;
             await _bookRepository.Update(book);
 
-            InvalidateCache();
+            InvalidateCache(borrowRecord.BookId);
 
             return MapToResponse(borrowRecord);
         }
@@ -159,9 +161,14 @@ namespace LibraryApi.Services
             };
         }
 
-        private void InvalidateCache()
+        private void InvalidateCache(Guid? bookId = null)
         {
             _cache.Remove(BorrowRecordsCacheKey);
+            _cache.Remove(BooksCacheKey);
+            if (bookId.HasValue)
+            {
+                _cache.Remove(BookByIdCacheKey(bookId.Value));
+            }
         }
     }
 }
