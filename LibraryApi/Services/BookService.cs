@@ -13,9 +13,17 @@ namespace LibraryApi.Services
             _bookRepository = bookRepository;
         }
 
-        public IEnumerable<Book> GetBooks()
+        public IEnumerable<BookResponse> GetBooks()
         {
-            return _bookRepository.GetAll();
+            return _bookRepository.GetAll().Select(book => new BookResponse
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Author = book.Author,
+                ISBN = book.ISBN,
+                TotalCopies = book.TotalCopies,
+                AvailableCopies = book.AvailableCopies
+            });
         }
 
         public BookResponse? GetBookById(Guid id)
@@ -36,6 +44,8 @@ namespace LibraryApi.Services
 
         public BookResponse CreateBook(CreateBookRequest request)
         {
+            ValidateBookRules(request.TotalCopies, request.AvailableCopies);
+
             var book = new Book
             {
                 Id = Guid.NewGuid(),
@@ -59,6 +69,8 @@ namespace LibraryApi.Services
         // TODO: only update the fields that are provided in the request, not all of them
         public BookResponse? UpdateBook(Guid id, UpdateBookRequest request)
         {
+            ValidateBookRules(request.TotalCopies, request.AvailableCopies);
+
             var book = _bookRepository.GetById(id);
             if (book == null) return null;
 
@@ -93,6 +105,24 @@ namespace LibraryApi.Services
                 AvailableCopies = book.AvailableCopies,
                 TotalCopies = book.TotalCopies
             };
+        }
+
+        private static void ValidateBookRules(int totalCopies, int availableCopies)
+        {
+            if (totalCopies <= 0)
+            {
+                throw new ArgumentException("TotalCopies must be greater than 0.");
+            }
+
+            if (availableCopies < 0)
+            {
+                throw new ArgumentException("AvailableCopies must be greater than or equal to 0.");
+            }
+
+            if (availableCopies > totalCopies)
+            {
+                throw new ArgumentException("AvailableCopies must not exceed TotalCopies.");
+            }
         }
     }
 }

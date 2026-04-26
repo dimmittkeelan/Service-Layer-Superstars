@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using LibraryApi.Services;
-using LibraryApi.Models;
 using LibraryApi.Dtos;
 
 namespace LibraryApi.Controllers
@@ -16,7 +15,7 @@ namespace LibraryApi.Controllers
             _bookService = bookService;
         }
         [HttpGet]
-        public ActionResult<IEnumerable<Book>> GetBooks()
+        public ActionResult<IEnumerable<BookResponse>> GetBooks()
         {
             var books = _bookService.GetBooks();
             return Ok(books);
