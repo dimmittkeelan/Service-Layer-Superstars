@@ -5,11 +5,10 @@ namespace LibraryApi.Repositories
 {
     public interface IBookRepository
     {
-        IEnumerable<Book> GetAll();
-        Book? GetById(Guid id);
-        
-        Book Add(Book book);
-        void Update(Book book);
-        void Delete(Guid id);
+        Task<List<Book>> GetAll();
+        Task<Book?> GetById(Guid id);
+        Task<Book> Add(Book book);
+        Task Update(Book book);
+        Task Delete(Guid id);
     }
 }

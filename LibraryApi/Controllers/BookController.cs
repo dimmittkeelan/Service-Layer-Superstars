@@ -15,15 +15,15 @@ namespace LibraryApi.Controllers
             _bookService = bookService;
         }
         [HttpGet]
-        public ActionResult<IEnumerable<BookResponse>> GetBooks()
+        public async Task<ActionResult<IEnumerable<BookResponse>>> GetBooks()
         {
-            var books = _bookService.GetBooks();
+            var books = await _bookService.GetBooksAsync();
             return Ok(books);
         }
         [HttpGet("{id:guid}")]
-        public ActionResult<BookResponse> GetBookById(Guid id)
+        public async Task<ActionResult<BookResponse>> GetBookById(Guid id)
         {
-            var book = _bookService.GetBookById(id);
+            var book = await _bookService.GetBookByIdAsync(id);
             if (book == null)
             {
                 return NotFound();
@@ -31,7 +31,7 @@ namespace LibraryApi.Controllers
             return Ok(book);
         }
         [HttpPost]
-        public ActionResult CreateBook([FromBody] CreateBookRequest input)
+        public async Task<ActionResult> CreateBook([FromBody] CreateBookRequest input)
         {
             if (string.IsNullOrWhiteSpace(input.Title))
             {
@@ -45,15 +45,15 @@ namespace LibraryApi.Controllers
             {
                 return BadRequest("ISBN is required.");
             }
-            var created = _bookService.CreateBook(input);
+            var created = await _bookService.CreateBookAsync(input);
             return CreatedAtAction(nameof(GetBookById), new { id = created.Id }, created);
         }
         
         [HttpPut("{id:guid}")]
-        public ActionResult UpdateBook(Guid id, [FromBody] UpdateBookRequest input)
+        public async Task<ActionResult> UpdateBook(Guid id, [FromBody] UpdateBookRequest input)
         {
 
-            var updated = _bookService.UpdateBook(id, input);
+            var updated = await _bookService.UpdateBookAsync(id, input);
             if (updated == null)
             {
                 return NotFound();
@@ -61,9 +61,9 @@ namespace LibraryApi.Controllers
             return Ok(updated);
         }
         [HttpDelete("{id:guid}")]
-        public ActionResult DeleteBook(Guid id)
+        public async Task<ActionResult> DeleteBook(Guid id)
         {
-            var deleted = _bookService.DeleteBook(id);
+            var deleted = await _bookService.DeleteBookAsync(id);
             if (deleted == null)
             {
                 return NotFound();

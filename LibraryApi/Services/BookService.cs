@@ -19,14 +19,14 @@ namespace LibraryApi.Services
             _cache = cache;
         }
 
-        public IEnumerable<BookResponse> GetBooks()
+        public async Task<IEnumerable<BookResponse>> GetBooksAsync()
         {
             if (_cache.TryGetValue(BooksCacheKey, out List<BookResponse>? cachedBooks) && cachedBooks != null)
             {
                 return cachedBooks;
             }
 
-            var books = _bookRepository.GetAll().Select(book => new BookResponse
+            var books = (await _bookRepository.GetAll()).Select(book => new BookResponse
             {
                 Id = book.Id,
                 Title = book.Title,
@@ -40,7 +40,7 @@ namespace LibraryApi.Services
             return books;
         }
 
-        public BookResponse? GetBookById(Guid id)
+        public async Task<BookResponse?> GetBookByIdAsync(Guid id)
         {
             var cacheKey = BookByIdCacheKey(id);
             if (_cache.TryGetValue(cacheKey, out BookResponse? cachedBook) && cachedBook != null)
@@ -48,7 +48,7 @@ namespace LibraryApi.Services
                 return cachedBook;
             }
 
-            var book = _bookRepository.GetById(id);
+            var book = await _bookRepository.GetById(id);
             if (book == null) return null;
 
             var response = new BookResponse
@@ -65,7 +65,7 @@ namespace LibraryApi.Services
             return response;
         }
 
-        public BookResponse CreateBook(CreateBookRequest request)
+        public async Task<BookResponse> CreateBookAsync(CreateBookRequest request)
         {
             ValidateBookRules(request.TotalCopies, request.AvailableCopies);
 
@@ -78,7 +78,7 @@ namespace LibraryApi.Services
                 TotalCopies = request.TotalCopies,
                 AvailableCopies = request.AvailableCopies
             };
-            var created = _bookRepository.Add(book);
+            var created = await _bookRepository.Add(book);
             InvalidateBookCache(created.Id);
             return new BookResponse
             {
@@ -90,9 +90,10 @@ namespace LibraryApi.Services
                 TotalCopies = created.TotalCopies
             };
         }
-        public BookResponse? UpdateBook(Guid id, UpdateBookRequest request)
+
+        public async Task<BookResponse?> UpdateBookAsync(Guid id, UpdateBookRequest request)
         {
-            var book = _bookRepository.GetById(id);
+            var book = await _bookRepository.GetById(id);
             if (book == null) return null;
 
             var nextTotalCopies = request.TotalCopies ?? book.TotalCopies;
@@ -125,7 +126,7 @@ namespace LibraryApi.Services
                 book.AvailableCopies = request.AvailableCopies.Value;
             }
 
-            _bookRepository.Update(book);
+            await _bookRepository.Update(book);
             InvalidateBookCache(book.Id);
             return new BookResponse
             {
@@ -138,12 +139,12 @@ namespace LibraryApi.Services
             };
         }
         // todo: error codes for not found
-        public BookResponse? DeleteBook(Guid id)
+        public async Task<BookResponse?> DeleteBookAsync(Guid id)
         {
-            var book = _bookRepository.GetById(id);
+            var book = await _bookRepository.GetById(id);
             if (book == null) return null;
 
-            _bookRepository.Delete(id);
+            await _bookRepository.Delete(id);
             InvalidateBookCache(id);
             return new BookResponse
             {
