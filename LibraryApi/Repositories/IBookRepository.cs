@@ -1,4 +1,3 @@
-using LibraryApi.Dtos;
 using LibraryApi.Models;
 
 namespace LibraryApi.Repositories
