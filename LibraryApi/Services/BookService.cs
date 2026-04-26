@@ -66,19 +66,40 @@ namespace LibraryApi.Services
                 TotalCopies = created.TotalCopies
             };
         }
-        // TODO: only update the fields that are provided in the request, not all of them
         public BookResponse? UpdateBook(Guid id, UpdateBookRequest request)
         {
-            ValidateBookRules(request.TotalCopies, request.AvailableCopies);
-
             var book = _bookRepository.GetById(id);
             if (book == null) return null;
 
-            book.Title = request.Title;
-            book.Author = request.Author;
-            book.ISBN = request.ISBN;
-            book.TotalCopies = request.TotalCopies;
-            book.AvailableCopies = request.AvailableCopies;
+            var nextTotalCopies = request.TotalCopies ?? book.TotalCopies;
+            var nextAvailableCopies = request.AvailableCopies ?? book.AvailableCopies;
+
+            ValidateBookRules(nextTotalCopies, nextAvailableCopies);
+
+            if (request.Title is not null)
+            {
+                book.Title = request.Title;
+            }
+
+            if (request.Author is not null)
+            {
+                book.Author = request.Author;
+            }
+
+            if (request.ISBN is not null)
+            {
+                book.ISBN = request.ISBN;
+            }
+
+            if (request.TotalCopies.HasValue)
+            {
+                book.TotalCopies = request.TotalCopies.Value;
+            }
+
+            if (request.AvailableCopies.HasValue)
+            {
+                book.AvailableCopies = request.AvailableCopies.Value;
+            }
 
             _bookRepository.Update(book);
             return new BookResponse
@@ -86,7 +107,9 @@ namespace LibraryApi.Services
                 Id = book.Id,
                 Title = book.Title,
                 Author = book.Author,
-                ISBN = book.ISBN
+                ISBN = book.ISBN,
+                TotalCopies = book.TotalCopies,
+                AvailableCopies = book.AvailableCopies
             };
         }
         // todo: error codes for not found
