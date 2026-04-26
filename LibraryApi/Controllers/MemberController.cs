@@ -36,6 +36,11 @@ namespace LibraryApi.Controllers
         [HttpPost]
         public async Task<ActionResult<MemberResponse>> CreateMember([FromBody] CreateMemberRequest input)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new ErrorResponse("Invalid request data."));
+            }
+
             if (string.IsNullOrWhiteSpace(input.FullName))
             {
                 return BadRequest(new ErrorResponse("FullName is required."));
