@@ -1,4 +1,4 @@
-namespace EventManagement.Api.Dtos;
+namespace LibraryApi.Dtos;
 
 public class ErrorResponse
 {
