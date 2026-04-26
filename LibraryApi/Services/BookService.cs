@@ -1,21 +1,32 @@
 using LibraryApi.Dtos;
 using LibraryApi.Models;
 using LibraryApi.Repositories;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace LibraryApi.Services
 {
     public class BookService : IBookService
     {
         private readonly IBookRepository _bookRepository;
+        private readonly IMemoryCache _cache;
+        private const string BooksCacheKey = "books:all";
 
-        public BookService(IBookRepository bookRepository)
+        private static string BookByIdCacheKey(Guid id) => $"books:{id}";
+
+        public BookService(IBookRepository bookRepository, IMemoryCache cache)
         {
             _bookRepository = bookRepository;
+            _cache = cache;
         }
 
         public IEnumerable<BookResponse> GetBooks()
         {
-            return _bookRepository.GetAll().Select(book => new BookResponse
+            if (_cache.TryGetValue(BooksCacheKey, out List<BookResponse>? cachedBooks) && cachedBooks != null)
+            {
+                return cachedBooks;
+            }
+
+            var books = _bookRepository.GetAll().Select(book => new BookResponse
             {
                 Id = book.Id,
                 Title = book.Title,
@@ -23,15 +34,24 @@ namespace LibraryApi.Services
                 ISBN = book.ISBN,
                 TotalCopies = book.TotalCopies,
                 AvailableCopies = book.AvailableCopies
-            });
+            }).ToList();
+
+            _cache.Set(BooksCacheKey, books, TimeSpan.FromMinutes(5));
+            return books;
         }
 
         public BookResponse? GetBookById(Guid id)
         {
+            var cacheKey = BookByIdCacheKey(id);
+            if (_cache.TryGetValue(cacheKey, out BookResponse? cachedBook) && cachedBook != null)
+            {
+                return cachedBook;
+            }
+
             var book = _bookRepository.GetById(id);
             if (book == null) return null;
 
-            return new BookResponse
+            var response = new BookResponse
             {
                 Id = book.Id,
                 Title = book.Title,
@@ -40,6 +60,9 @@ namespace LibraryApi.Services
                 TotalCopies = book.TotalCopies,
                 AvailableCopies = book.AvailableCopies
             };
+
+            _cache.Set(cacheKey, response, TimeSpan.FromMinutes(5));
+            return response;
         }
 
         public BookResponse CreateBook(CreateBookRequest request)
@@ -56,6 +79,7 @@ namespace LibraryApi.Services
                 AvailableCopies = request.AvailableCopies
             };
             var created = _bookRepository.Add(book);
+            InvalidateBookCache(created.Id);
             return new BookResponse
             {
                 Id = created.Id,
@@ -102,6 +126,7 @@ namespace LibraryApi.Services
             }
 
             _bookRepository.Update(book);
+            InvalidateBookCache(book.Id);
             return new BookResponse
             {
                 Id = book.Id,
@@ -119,6 +144,7 @@ namespace LibraryApi.Services
             if (book == null) return null;
 
             _bookRepository.Delete(id);
+            InvalidateBookCache(id);
             return new BookResponse
             {
                 Id = book.Id,
@@ -146,6 +172,12 @@ namespace LibraryApi.Services
             {
                 throw new ArgumentException("AvailableCopies must not exceed TotalCopies.");
             }
+        }
+
+        private void InvalidateBookCache(Guid id)
+        {
+            _cache.Remove(BooksCacheKey);
+            _cache.Remove(BookByIdCacheKey(id));
         }
     }
 }
