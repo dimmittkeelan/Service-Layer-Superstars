@@ -1,6 +1,8 @@
 using LibraryApi.Dtos;
 using LibraryApi.Models;
 using LibraryApi.Repositories;
+using LibraryApi.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace LibraryApi.Services
@@ -10,6 +12,7 @@ namespace LibraryApi.Services
         private readonly IBorrowRecordRepository _borrowRecordRepository;
         private readonly IBookRepository _bookRepository;
         private readonly IMemberRepository _memberRepository;
+        private readonly ApplicationDbContext _context;
         private readonly IMemoryCache _cache;
         private const string BorrowRecordsCacheKey = "borrow-records:all";
         private const string BooksCacheKey = "books:all";
@@ -21,11 +24,13 @@ namespace LibraryApi.Services
             IBorrowRecordRepository borrowRecordRepository,
             IBookRepository bookRepository,
             IMemberRepository memberRepository,
+            ApplicationDbContext context,
             IMemoryCache cache)
         {
             _borrowRecordRepository = borrowRecordRepository;
             _bookRepository = bookRepository;
             _memberRepository = memberRepository;
+            _context = context;
             _cache = cache;
         }
 
@@ -45,12 +50,6 @@ namespace LibraryApi.Services
                 throw new InvalidOperationException("Member not found.");
             }
 
-            // Check if book has available copies
-            if (book.AvailableCopies <= 0)
-            {
-                throw new InvalidOperationException("Book is not available for borrowing.");
-            }
-
             // Check if member already has an active borrow of this book
             var activeBorrow = await _borrowRecordRepository.GetActiveBorrow(request.BookId, request.MemberId);
             if (activeBorrow != null)
@@ -58,7 +57,7 @@ namespace LibraryApi.Services
                 throw new InvalidOperationException("Member already checked-out a copy of this book.");
             }
 
-            // Create borrow record
+            // Create borrow record first
             var borrowRecord = new BorrowRecord
             {
                 Id = Guid.NewGuid(),
@@ -71,9 +70,17 @@ namespace LibraryApi.Services
 
             var createdRecord = await _borrowRecordRepository.Add(borrowRecord);
 
-            // Decrease available copies
-            book.AvailableCopies--;
-            await _bookRepository.Update(book);
+            // Atomically decrease available copies only if copies > 0 (prevents race condition)
+            var rowsAffected = await _context.Database.ExecuteSqlRawAsync(
+                "UPDATE Books SET AvailableCopies = AvailableCopies - 1 WHERE Id = {0} AND AvailableCopies > 0",
+                request.BookId);
+
+            if (rowsAffected == 0)
+            {
+                // Book became unavailable, delete the borrow record and throw error
+                await _borrowRecordRepository.Delete(createdRecord.Id);
+                throw new InvalidOperationException("Book is no longer available for borrowing.");
+            }
 
             InvalidateCache(request.BookId);
 
@@ -102,14 +109,20 @@ namespace LibraryApi.Services
                 throw new InvalidOperationException("Book not found.");
             }
 
-            // Update borrow record
+            // Update borrow record status
             borrowRecord.Status = "Returned";
             borrowRecord.ReturnDate = DateTime.UtcNow;
             await _borrowRecordRepository.Update(borrowRecord);
 
-            // Increase available copies
-            book.AvailableCopies++;
-            await _bookRepository.Update(book);
+            // Atomically increase available copies (but not beyond TotalCopies)
+            var rowsAffected = await _context.Database.ExecuteSqlRawAsync(
+                "UPDATE Books SET AvailableCopies = AvailableCopies + 1 WHERE Id = {0} AND AvailableCopies < TotalCopies",
+                borrowRecord.BookId);
+
+            if (rowsAffected == 0)
+            {
+                throw new InvalidOperationException("Failed to update book availability.");
+            }
 
             InvalidateCache(borrowRecord.BookId);
 
