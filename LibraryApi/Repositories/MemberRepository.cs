@@ -13,35 +13,36 @@ namespace LibraryApi.Repositories
             _context = context;
         }
 
-        public IEnumerable<Member> GetAll()
+        public async Task<List<Member>> GetAll()
         {
-            return _context.Members.ToList();
+            return await _context.Members.ToListAsync();
         }
 
-        public Member? GetById(Guid id)
+        public async Task<Member?> GetById(Guid id)
         {
-            return _context.Members.Find(id);
+            return await _context.Members.FindAsync(id);
         }
 
-        public void Add(Member member)
+        public async Task<Member> Add(Member member)
         {
             _context.Members.Add(member);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return member;
         }
 
-        public void Update(Member member)
+        public async Task Update(Member member)
         {
             _context.Members.Update(member);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            var member = _context.Members.Find(id);
+            var member = await _context.Members.FindAsync(id);
             if (member != null)
             {
                 _context.Members.Remove(member);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }

@@ -24,8 +24,7 @@ builder.Services.AddScoped<IBorrowRecordRepository, BorrowRecordRepository>();
 
 // Register services
 builder.Services.AddScoped<IBookService, BookService>();
-/* TODO */
-//builder.Services.AddScoped<IMemberService, MemberService>();
+builder.Services.AddScoped<IMemberService, MemberService>();
 //builder.Services.AddScoped<IBorrowRecordService, BorrowRecordService>();
 
 var app = builder.Build();

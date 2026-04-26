@@ -4,10 +4,10 @@ namespace LibraryApi.Repositories
 {
     public interface IMemberRepository
     {
-        IEnumerable<Member> GetAll();
-        Member? GetById(Guid id);
-        void Add(Member member);
-        void Update(Member member);
-        void Delete(Guid id);
+        Task<List<Member>> GetAll();
+        Task<Member?> GetById(Guid id);
+        Task<Member> Add(Member member);
+        Task Update(Member member);
+        Task Delete(Guid id);
     }
 }
