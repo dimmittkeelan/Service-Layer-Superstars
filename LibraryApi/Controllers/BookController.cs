@@ -21,7 +21,7 @@ namespace LibraryApi.Controllers
             return Ok(books);
         }
         [HttpGet("{id:guid}")]
-        public ActionResult<Book> GetBookById(Guid id)
+        public ActionResult<BookResponse> GetBookById(Guid id)
         {
             var book = _bookService.GetBookById(id);
             if (book == null)
