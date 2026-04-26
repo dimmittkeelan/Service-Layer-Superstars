@@ -3,10 +3,12 @@ namespace LibraryApi.Repositories
 {
     public interface IBorrowRecordRepository
     {
-        IEnumerable<BorrowRecord> GetAll();
-        BorrowRecord? GetById(Guid id);
-        void Add(BorrowRecord record);
-        void Update(BorrowRecord record);
-        void Delete(Guid id);
+        Task<List<BorrowRecord>> GetAll();
+        Task<BorrowRecord?> GetById(Guid id);
+        Task<List<BorrowRecord>> GetByMemberId(Guid memberId);
+        Task<BorrowRecord?> GetActiveBorrow(Guid bookId, Guid memberId);
+        Task<BorrowRecord> Add(BorrowRecord record);
+        Task Update(BorrowRecord record);
+        Task Delete(Guid id);
     }
 }

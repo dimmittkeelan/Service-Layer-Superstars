@@ -13,35 +13,47 @@ namespace LibraryApi.Repositories
             _context = context;
         }
 
-        public IEnumerable<BorrowRecord> GetAll()
+        public async Task<List<BorrowRecord>> GetAll()
         {
-            return _context.BorrowRecords.ToList();
+            return await _context.BorrowRecords.ToListAsync();
         }
 
-        public BorrowRecord? GetById(Guid id)
+        public async Task<BorrowRecord?> GetById(Guid id)
         {
-            return _context.BorrowRecords.Find(id);
+            return await _context.BorrowRecords.FindAsync(id);
         }
 
-        public void Add(BorrowRecord record)
+        public async Task<List<BorrowRecord>> GetByMemberId(Guid memberId)
+        {
+            return await _context.BorrowRecords.Where(br => br.MemberId == memberId).ToListAsync();
+        }
+
+        public async Task<BorrowRecord?> GetActiveBorrow(Guid bookId, Guid memberId)
+        {
+            return await _context.BorrowRecords
+                .FirstOrDefaultAsync(br => br.BookId == bookId && br.MemberId == memberId && br.Status == "Borrowed");
+        }
+
+        public async Task<BorrowRecord> Add(BorrowRecord record)
         {
             _context.BorrowRecords.Add(record);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return record;
         }
 
-        public void Update(BorrowRecord record)
+        public async Task Update(BorrowRecord record)
         {
             _context.BorrowRecords.Update(record);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            var record = _context.BorrowRecords.Find(id);
+            var record = await _context.BorrowRecords.FindAsync(id);
             if (record != null)
             {
                 _context.BorrowRecords.Remove(record);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }
