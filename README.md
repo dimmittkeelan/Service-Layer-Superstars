@@ -1,9 +1,13 @@
 # Assignment: Library Book Borrowing System (Backend API)
 
-Backend API Project built with ASP.NET Core
+Backend Library API Project built with ASP.NET Core
 
 **Team:** Service Layer Superstars
-**Course:** Cal State Fullerton — Backend Engineering
+**Course:** Cal State Fullerton — Backend Engineering (CPSC 449-03)
+
+## Tested Environment
+
+This project was tested on .NET 8.0
 
 ## Team Members
 
@@ -11,20 +15,11 @@ Backend API Project built with ASP.NET Core
 - Owin Rojas
 - Varnika Pullareddy
 
-## Important Dates
-
-| Milestone | Due Date |
-|-----------|----------|
-| Milestone 1 — Team name and member list submitted via Canvas | April 11 |
-| Final Submission | April 26 |
-
-Final submission is emailed to `mfirdouse@fullerton.edu` with class and group name in the subject line.
-
 ## Project Overview
 
 A backend REST API for a Library Book Borrowing System built with ASP.NET Core. The system supports managing books, library members, and borrowing records with a focus on clean architecture, correctness, and real-world backend engineering practices.
 
-No UI. No authentication. Backend only.
+This project includes no UI, No authentication, backend only.
 
 ## Resources
 
@@ -44,50 +39,5 @@ The project follows a multi-layer architecture:
 
 DTOs are used for all API input and output. Dependencies are injected via constructor injection registered in `Program.cs`.
 
-## Deliverables
-
-### 1. Source Code
-A GitHub repository containing the complete ASP.NET Core Web API project with visible commits from all team members.
-
-### 2. Design Document (2–4 pages)
-Covers:
-- System overview
-- API design and endpoint list
-- Architecture explanation
-- DTO design
-- Validation strategy
-- Error handling approach
-- Concurrency handling explanation
-- Caching strategy
-
-### 3. API Endpoint List
-A list of all endpoints with their HTTP methods and routes.
-
-### 4. Team Contribution Summary
-A breakdown of what each member contributed, included in the design document.
-
-### 5. Demo / Video Recording
-Must demonstrate:
-- Project structure
-- Borrow and return flows
-- Validation and error handling examples
-- Concurrency scenario
-- Caching behavior
-
-## Grading Rubric
-
-| Category | Points |
-|----------|--------|
-| API Design (REST) | 10 |
-| Architecture (Layered Design) | 15 |
-| DTO Usage | 10 |
-| Dependency Injection | 10 |
-| Validation | 10 |
-| Error Handling | 10 |
-| Async Implementation | 10 |
-| Concurrency Handling | 10 |
-| Caching and Performance | 10 |
-| Code Quality and Structure | 5 |
-| Documentation | 5 |
-| Demo / Presentation | 5 |
-| **Total** | **100** |
+### Source Code
+This GitHub repository containing the complete ASP.NET Core Web API project with visible commits from all team members.
