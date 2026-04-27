@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using LibraryApi.Services;
 using LibraryApi.Dtos;
+using System.ComponentModel.DataAnnotations;
 
 namespace LibraryApi.Controllers
 {
@@ -46,9 +47,9 @@ namespace LibraryApi.Controllers
                 return BadRequest(new ErrorResponse("FullName is required."));
             }
 
-            if (string.IsNullOrWhiteSpace(input.Email))
+            if (string.IsNullOrWhiteSpace(input.Email) || !new EmailAddressAttribute().IsValid(input.Email))
             {
-                return BadRequest(new ErrorResponse("Email is required."));
+                return BadRequest(new ErrorResponse("A valid Email is required."));
             }
 
             try
