@@ -16,7 +16,6 @@ namespace LibraryApi.Controllers
             _borrowRecordService = borrowRecordService;
         }
 
-        // POST /api/borrow/borrow
         [HttpPost]
         public async Task<ActionResult<BorrowRecordResponse>> BorrowBook([FromBody] BorrowRequest input)
         {
