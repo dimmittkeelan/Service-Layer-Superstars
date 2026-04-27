@@ -17,7 +17,7 @@ namespace LibraryApi.Controllers
         }
 
         // POST /api/borrow/borrow
-        [HttpPost("borrow")]
+        [HttpPost]
         public async Task<ActionResult<BorrowRecordResponse>> BorrowBook([FromBody] BorrowRequest input)
         {
             if (input.BookId == Guid.Empty)
