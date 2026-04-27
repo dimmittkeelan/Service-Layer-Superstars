@@ -1,11 +1,25 @@
 {
   "version": 2,
-  "dgSpecHash": "VS1anlreJRA=",
+  "dgSpecHash": "ONYMWQgoYSU=",
   "success": true,
-  "projectFilePath": "/Users/keelandimmitt/Documents/GitHub/Service-Layer-Superstars/LibraryApi.csproj",
+  "projectFilePath": "C:\\Users\\dimmi\\Desktop\\CS Stuff\\Back end engineering\\Service-Layer-Superstars\\LibraryApi.csproj",
   "expectedPackageFiles": [
-    "/Users/keelandimmitt/.nuget/packages/microsoft.aspnetcore.openapi/9.0.12/microsoft.aspnetcore.openapi.9.0.12.nupkg.sha512",
-    "/Users/keelandimmitt/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512"
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.12\\microsoft.aspnetcore.openapi.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.entityframeworkcore\\9.0.12\\microsoft.entityframeworkcore.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\9.0.12\\microsoft.entityframeworkcore.abstractions.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\9.0.12\\microsoft.entityframeworkcore.analyzers.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.entityframeworkcore.inmemory\\9.0.12\\microsoft.entityframeworkcore.inmemory.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\9.0.12\\microsoft.entityframeworkcore.relational.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\9.0.12\\microsoft.extensions.caching.abstractions.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.extensions.caching.memory\\9.0.12\\microsoft.extensions.caching.memory.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.12\\microsoft.extensions.configuration.abstractions.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\9.0.12\\microsoft.extensions.dependencyinjection.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\9.0.12\\microsoft.extensions.dependencyinjection.abstractions.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.extensions.logging\\9.0.12\\microsoft.extensions.logging.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\9.0.12\\microsoft.extensions.logging.abstractions.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.extensions.options\\9.0.12\\microsoft.extensions.options.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.extensions.primitives\\9.0.12\\microsoft.extensions.primitives.9.0.12.nupkg.sha512",
+    "C:\\Users\\dimmi\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
   ],
   "logs": []
 }

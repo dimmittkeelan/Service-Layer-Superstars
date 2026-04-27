@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/Users/keelandimmitt/Documents/GitHub/Service-Layer-Superstars/LibraryApi.csproj": {}
+    "C:\\Users\\dimmi\\Desktop\\CS Stuff\\Back end engineering\\Service-Layer-Superstars\\LibraryApi.csproj": {}
   },
   "projects": {
-    "/Users/keelandimmitt/Documents/GitHub/Service-Layer-Superstars/LibraryApi.csproj": {
+    "C:\\Users\\dimmi\\Desktop\\CS Stuff\\Back end engineering\\Service-Layer-Superstars\\LibraryApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/keelandimmitt/Documents/GitHub/Service-Layer-Superstars/LibraryApi.csproj",
+        "projectUniqueName": "C:\\Users\\dimmi\\Desktop\\CS Stuff\\Back end engineering\\Service-Layer-Superstars\\LibraryApi.csproj",
         "projectName": "LibraryApi",
-        "projectPath": "/Users/keelandimmitt/Documents/GitHub/Service-Layer-Superstars/LibraryApi.csproj",
-        "packagesPath": "/Users/keelandimmitt/.nuget/packages/",
-        "outputPath": "/Users/keelandimmitt/Documents/GitHub/Service-Layer-Superstars/obj/",
+        "projectPath": "C:\\Users\\dimmi\\Desktop\\CS Stuff\\Back end engineering\\Service-Layer-Superstars\\LibraryApi.csproj",
+        "packagesPath": "C:\\Users\\dimmi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\dimmi\\Desktop\\CS Stuff\\Back end engineering\\Service-Layer-Superstars\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/keelandimmitt/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\dimmi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -47,6 +49,18 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[9.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[9.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[9.0.12, )"
             }
           },
           "imports": [
@@ -68,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.310/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.313/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
