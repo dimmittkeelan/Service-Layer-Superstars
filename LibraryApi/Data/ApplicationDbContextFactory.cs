@@ -8,7 +8,7 @@ namespace LibraryApi.Data
         public ApplicationDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseSqlite("Data Source=library.db");
+            optionsBuilder.UseInMemoryDatabase("LibraryDb");
 
             return new ApplicationDbContext(optionsBuilder.Options);
         }

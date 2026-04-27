@@ -1,21 +1,33 @@
 using LibraryApi.Data;
-using Microsoft.EntityFrameworkCore;
+using LibraryApi.Dtos;
+using LibraryApi.Middleware;
 using LibraryApi.Repositories;
 using LibraryApi.Services;
-
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
+
+// Override the default [ApiController] validation response to use { "error": "..." } format
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var firstError = context.ModelState.Values
+            .SelectMany(v => v.Errors)
+            .Select(e => e.ErrorMessage)
+            .FirstOrDefault() ?? "Invalid request.";
+        return new BadRequestObjectResult(new ErrorResponse(firstError));
+    };
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-// Add caching
 builder.Services.AddMemoryCache();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseInMemoryDatabase("LibraryDb"));
 
 // Register repositories
 builder.Services.AddScoped<IBookRepository, BookRepository>();
@@ -29,7 +41,8 @@ builder.Services.AddScoped<IBorrowRecordService, BorrowRecordService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -37,9 +50,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.MapControllers();
-
 app.Run();
-
-

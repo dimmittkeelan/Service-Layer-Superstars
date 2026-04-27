@@ -9,29 +9,31 @@ namespace LibraryApi.Services
     {
         private readonly IMemberRepository _memberRepository;
         private readonly IMemoryCache _cache;
+        private readonly ILogger<MemberService> _logger;
         private const string MembersCacheKey = "members:all";
 
         private static string MemberByIdCacheKey(Guid id) => $"members:{id}";
 
-        public MemberService(IMemberRepository memberRepository, IMemoryCache cache)
+        public MemberService(IMemberRepository memberRepository, IMemoryCache cache, ILogger<MemberService> logger)
         {
             _memberRepository = memberRepository;
             _cache = cache;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<MemberResponse>> GetMembersAsync()
         {
-            if (_cache.TryGetValue(MembersCacheKey, out List<MemberResponse>? cachedMembers) && cachedMembers != null)
-            {
-                return cachedMembers;
-            }
+            _logger.LogInformation("Getting all members");
 
-            var members = (await _memberRepository.GetAll()).Select(member => new MemberResponse
+            if (_cache.TryGetValue(MembersCacheKey, out List<MemberResponse>? cached) && cached != null)
+                return cached;
+
+            var members = (await _memberRepository.GetAll()).Select(m => new MemberResponse
             {
-                Id = member.Id,
-                FullName = member.FullName,
-                Email = member.Email,
-                MembershipDate = member.MembershipDate
+                Id = m.Id,
+                FullName = m.FullName,
+                Email = m.Email,
+                MembershipDate = m.MembershipDate
             }).ToList();
 
             _cache.Set(MembersCacheKey, members, TimeSpan.FromMinutes(5));
@@ -40,11 +42,11 @@ namespace LibraryApi.Services
 
         public async Task<MemberResponse?> GetMemberByIdAsync(Guid id)
         {
+            _logger.LogInformation("Getting member by ID {Id}", id);
+
             var cacheKey = MemberByIdCacheKey(id);
-            if (_cache.TryGetValue(cacheKey, out MemberResponse? cachedMember) && cachedMember != null)
-            {
-                return cachedMember;
-            }
+            if (_cache.TryGetValue(cacheKey, out MemberResponse? cached) && cached != null)
+                return cached;
 
             var member = await _memberRepository.GetById(id);
             if (member == null) return null;
@@ -63,6 +65,8 @@ namespace LibraryApi.Services
 
         public async Task<MemberResponse> CreateMemberAsync(CreateMemberRequest request)
         {
+            _logger.LogInformation("Creating member: {FullName}, {Email}", request.FullName, request.Email);
+
             var member = new Member
             {
                 Id = Guid.NewGuid(),
@@ -71,33 +75,27 @@ namespace LibraryApi.Services
                 MembershipDate = DateTime.UtcNow
             };
 
-            var createdMember = await _memberRepository.Add(member);
+            var created = await _memberRepository.Add(member);
             InvalidateCache();
 
             return new MemberResponse
             {
-                Id = createdMember.Id,
-                FullName = createdMember.FullName,
-                Email = createdMember.Email,
-                MembershipDate = createdMember.MembershipDate
+                Id = created.Id,
+                FullName = created.FullName,
+                Email = created.Email,
+                MembershipDate = created.MembershipDate
             };
         }
 
         public async Task<MemberResponse?> UpdateMemberAsync(Guid id, UpdateMemberRequest request)
         {
+            _logger.LogInformation("Updating member {Id}", id);
+
             var member = await _memberRepository.GetById(id);
             if (member == null) return null;
 
-            // Partial update - only update provided fields
-            if (!string.IsNullOrWhiteSpace(request.FullName))
-            {
-                member.FullName = request.FullName;
-            }
-
-            if (!string.IsNullOrWhiteSpace(request.Email))
-            {
-                member.Email = request.Email;
-            }
+            if (!string.IsNullOrWhiteSpace(request.FullName)) member.FullName = request.FullName;
+            if (!string.IsNullOrWhiteSpace(request.Email)) member.Email = request.Email;
 
             await _memberRepository.Update(member);
             InvalidateCache();
@@ -113,6 +111,7 @@ namespace LibraryApi.Services
 
         public async Task DeleteMemberAsync(Guid id)
         {
+            _logger.LogInformation("Deleting member {Id}", id);
             await _memberRepository.Delete(id);
             InvalidateCache();
         }

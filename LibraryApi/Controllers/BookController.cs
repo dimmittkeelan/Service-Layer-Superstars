@@ -14,37 +14,38 @@ namespace LibraryApi.Controllers
         {
             _bookService = bookService;
         }
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BookResponse>>> GetBooks()
+        public async Task<ActionResult<PagedResponse<BookResponse>>> GetBooks(
+            [FromQuery] string? search = null,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
         {
-            var books = await _bookService.GetBooksAsync();
-            return Ok(books);
+            if (page < 1) page = 1;
+            if (pageSize < 1 || pageSize > 100) pageSize = 10;
+
+            var result = await _bookService.GetBooksAsync(search, page, pageSize);
+            return Ok(result);
         }
+
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<BookResponse>> GetBookById(Guid id)
         {
             var book = await _bookService.GetBookByIdAsync(id);
             if (book == null)
-            {
                 return NotFound(new ErrorResponse("Book not found."));
-            }
             return Ok(book);
         }
+
         [HttpPost]
         public async Task<ActionResult> CreateBook([FromBody] CreateBookRequest input)
         {
             if (string.IsNullOrWhiteSpace(input.Title))
-            {
                 return BadRequest(new ErrorResponse("Title is required."));
-            }
-            else if (string.IsNullOrWhiteSpace(input.Author))
-            {
+            if (string.IsNullOrWhiteSpace(input.Author))
                 return BadRequest(new ErrorResponse("Author is required."));
-            }
-            else if (string.IsNullOrWhiteSpace(input.ISBN))
-            {
+            if (string.IsNullOrWhiteSpace(input.ISBN))
                 return BadRequest(new ErrorResponse("ISBN is required."));
-            }
 
             try
             {
@@ -56,7 +57,7 @@ namespace LibraryApi.Controllers
                 return BadRequest(new ErrorResponse(ex.Message));
             }
         }
-        
+
         [HttpPut("{id:guid}")]
         public async Task<ActionResult> UpdateBook(Guid id, [FromBody] UpdateBookRequest input)
         {
@@ -64,10 +65,7 @@ namespace LibraryApi.Controllers
             {
                 var updated = await _bookService.UpdateBookAsync(id, input);
                 if (updated == null)
-                {
                     return NotFound(new ErrorResponse("Book not found."));
-                }
-
                 return Ok(updated);
             }
             catch (ArgumentException ex)
@@ -75,16 +73,14 @@ namespace LibraryApi.Controllers
                 return BadRequest(new ErrorResponse(ex.Message));
             }
         }
+
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> DeleteBook(Guid id)
         {
             var deleted = await _bookService.DeleteBookAsync(id);
             if (deleted == null)
-            {
                 return NotFound(new ErrorResponse("Book not found."));
-            }
             return Ok(deleted);
         }
-
     }
 }

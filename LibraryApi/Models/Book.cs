@@ -1,15 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace LibraryApi.Models
 {
-    /* 
-Book:    
-Id
-Title
-Author
-ISBN
-TotalCopies
-AvailableCopies
-
-     */
     public class Book
     {
         public Guid Id { get; set; }
@@ -17,6 +9,7 @@ AvailableCopies
         public string Author { get; set; } = string.Empty;
         public string ISBN { get; set; } = string.Empty;
         public int TotalCopies { get; set; }
+        [ConcurrencyCheck]
         public int AvailableCopies { get; set; }
     }
 }

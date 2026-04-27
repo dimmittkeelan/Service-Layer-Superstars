@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build *)",
+      "Bash(dotnet run *)",
+      "Bash(curl -s -X POST http://localhost:5050/api/books -H 'Content-Type: application/json' -d '{\"title\":\"Dune\",\"author\":\"Frank Herbert\",\"isbn\":\"978-0441013593\",\"totalCopies\":3,\"availableCopies\":3}')",
+      "Bash(python -m json.tool)",
+      "Bash(curl -s -X POST http://localhost:5050/api/books -H 'Content-Type: application/json' -d '{\"title\":\"Foundation\",\"author\":\"Isaac Asimov\",\"isbn\":\"978-0553293357\",\"totalCopies\":2,\"availableCopies\":1}')",
+      "Bash(curl -s \"http://localhost:5050/api/books?page=1&pageSize=10\")",
+      "Bash(curl -s \"http://localhost:5050/api/books?search=dune\")",
+      "Bash(curl -s -X POST http://localhost:5050/api/members -H 'Content-Type: application/json' -d '{\"fullName\":\"Alice Smith\",\"email\":\"alice@example.com\"}')"
+    ]
+  }
+}

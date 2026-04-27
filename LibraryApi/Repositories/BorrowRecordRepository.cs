@@ -25,13 +25,21 @@ namespace LibraryApi.Repositories
 
         public async Task<List<BorrowRecord>> GetByMemberId(Guid memberId)
         {
-            return await _context.BorrowRecords.Where(br => br.MemberId == memberId).ToListAsync();
+            return await _context.BorrowRecords
+                .Where(br => br.MemberId == memberId)
+                .ToListAsync();
         }
 
         public async Task<BorrowRecord?> GetActiveBorrow(Guid bookId, Guid memberId)
         {
             return await _context.BorrowRecords
                 .FirstOrDefaultAsync(br => br.BookId == bookId && br.MemberId == memberId && br.Status == "Borrowed");
+        }
+
+        public async Task<int> GetActiveBorrowCountByMember(Guid memberId)
+        {
+            return await _context.BorrowRecords
+                .CountAsync(br => br.MemberId == memberId && br.Status == "Borrowed");
         }
 
         public async Task<BorrowRecord> Add(BorrowRecord record)
