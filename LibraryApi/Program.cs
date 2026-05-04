@@ -2,6 +2,7 @@ using LibraryApi.Data;
 using LibraryApi.Dtos;
 using LibraryApi.Middleware;
 using LibraryApi.Repositories;
+using LibraryApi.Seeder;
 using LibraryApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -51,4 +52,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
+
+// Seed demo data into the in-memory database on startup
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await DataSeeder.SeedAsync(context);
+}
+
 app.Run();
